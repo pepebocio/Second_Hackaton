@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mixer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+  <link rel="stylesheet" href="style.css"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+    <button id="startTransport">Start</button>
+    <button id="stopTransport">Stop</button>
+    
+    <div>Remember to turn off some of them before start, or it will be a mess :D</div> 
+    <!-- Track 1 -->
+    <div id="track1">
+        <div class="track-name">Kick</div> 
+        <div class="controls">
+          <button class="control-button mute active" id="mute-track1">ON</button>
+          <button class="control-button reverb inactive" id="reverb-track1">Reverb</button>
+          <label for="volume-track1" class="volume-label">Volume</label>
+          <input type="range" class="volume-slider" id="volume-track1" min="-48" max="0" step="1" value="-12">
+        </div>
+      </div>
+      
+      <!-- Track 2 -->
+      <div id="track2">
+        <div class="track-name">Snare</div> 
+        <div class="controls">
+          <button class="control-button mute active" id="mute-track2">ON</button>
+          <button class="control-button reverb inactive" id="reverb-track2">Reverb</button>
+          <label for="volume-track2" class="volume-label">Volume</label>
+          <input type="range" class="volume-slider" id="volume-track2" min="-48" max="0" step="1" value="-12">
+        </div>
+      </div>
+      
+      <!-- Track 3 -->
+      <div id="track3">
+        <div class="track-name">Melody</div> 
+        <div class="controls">
+          <button class="control-button mute active" id="mute-track3">ON</button>
+          <button class="control-button reverb inactive" id="reverb-track3">Reverb</button>
+          <label for="volume-track3" class="volume-label">Volume</label>
+          <input type="range" class="volume-slider" id="volume-track3" min="-48" max="0" step="1" value="-12">
+        </div>
+      </div>
+
+    <!-- Track 4 -->
+    <div id="track4">
+        <div class="track-name">Clap</div> 
+        <div class="controls">
+            <button class="control-button mute active" id="mute-track4">ON</button>
+            <button class="control-button reverb inactive" id="reverb-track4">Reverb</button>
+            <label for="volume-track4" class="volume-label">Volume</label>
+            <input type="range" class="volume-slider" id="volume-track4" min="-48" max="0" step="1" value="-18">
+        </div>
+        </div>
+
+    <!-- Track 5 -->
+    <div id="track5">
+        <div class="track-name">Chords</div> 
+        <div class="controls">
+            <button class="control-button mute active" id="mute-track5">ON</button>
+            <button class="control-button reverb inactive" id="reverb-track5">Reverb</button>
+            <label for="volume-track5" class="volume-label">Volume</label>
+            <input type="range" class="volume-slider" id="volume-track5" min="-48" max="0" step="1" value="-12">
+        </div>
+    </div>
+
+    
+
+  <script src="script.js"></script>
+</body>
+</html>
+

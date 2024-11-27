@@ -1,0 +1,97 @@
+/* Estilo básico para los botones */
+.control-button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Color verde para cuando está activado */
+  .control-button.active {
+    background-color: green;
+  }
+  
+  /* Color rojo para cuando está desactivado */
+  .control-button.inactive {
+    background-color: red;
+  }
+  
+  /* Estilos para los botones de "Iniciar" y "Detener" transporte */
+  button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .track-name {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px; /* Tamaño más pequeño */
+    font-weight: bold;
+    text-align: center;
+    color: #f5f5f5; /* Blanco suave */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4); /* Sombra más ligera */
+    background: linear-gradient(45deg, #ff6a00, #ee0979); /* Degradado de color */
+    padding: 8px 16px; /* Menos padding */
+    border-radius: 6px; /* Bordes más suaves */
+    margin: 8px 0;
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+  
+  .track-name:hover {
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el mouse */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6); /* Más sombra en hover */
+    background: linear-gradient(45deg, #ee0979, #ff6a00); /* Cambio de colores al pasar el mouse */
+  }
+  
+  .volume-container {
+    display: flex;
+    align-items: center; /* Alinea verticalmente el texto y el slider */
+    gap: 10px; /* Espacio entre el texto y la barra */
+  }
+  
+  .volume-label {
+    font-family: 'Arial', sans-serif;
+    font-size: 14px; /* Tamaño del texto */
+    color: #000; /* Blanco suave */
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Sombra ligera */
+  }
+  
+  .volume-slider {
+    width: 150px; /* Ajusta el ancho de la barra */
+    height: 8px; /* Altura de la barra */
+    -webkit-appearance: none; /* Elimina estilos predeterminados del slider */
+    appearance: none;
+    background: #ddd; /* Fondo de la barra */
+    border-radius: 5px;
+    transition: background 0.3s ease; /* Transición suave */
+  }
+  
+  .volume-slider:hover {
+    background: #aaa; /* Cambia el color al pasar el ratón */
+  }
+  
+  .volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px; /* Tamaño del control deslizante */
+    height: 20px;
+    background: #007bff; /* Color del control deslizante */
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .volume-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
