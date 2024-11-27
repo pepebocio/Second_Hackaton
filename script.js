@@ -1,6 +1,6 @@
 // Crear efectos y nodos
 const reverb = new Tone.Reverb(6).toDestination(); // Reverb con un decay de 3 segundos
-reverb.wet.value = 0.5;
+reverb.wet.value = 0.8;
 
 // Crear sintetizadores para cada pista
 Tone.Transport.bpm.value = 127;
