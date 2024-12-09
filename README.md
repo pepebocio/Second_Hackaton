@@ -7,7 +7,6 @@ This web page was created for the second hackathon about Tone.js as part of the 
 3. Current version: Focused on fixing bugs and arranging the song that plays when the button is pressed. For now, you can only play the song once due to fundamental issues with the way automation was programmed. This could be addressed in a future version, but I felt it was too much effort for a small hackathon. To avoid bugs, the buttons are blocked when necessary.
 ## Autor
 jorge.cuartero@mail.polimi.it
-
-##TRY IT
+## TRY IT
 
 [DJ set](https://pepebocio.github.io/Second_Hackaton/)
