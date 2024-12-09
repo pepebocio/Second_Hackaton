@@ -1,8 +1,8 @@
-// Crear efectos y nodos
-const reverb = new Tone.Reverb(6).toDestination(); // Reverb con un decay de 3 segundos
+// Create effects
+const reverb = new Tone.Reverb(6).toDestination();
 reverb.wet.value = 0.8;
 
-// Crear sintetizadores y filtros para cada pista
+//Synthesisors and filters, with their controlers
 
 
 function createLowPassFilter() {
@@ -13,7 +13,6 @@ function createLowPassFilter() {
     }).toDestination();
 }
 
-// Pistas y sus filtros individuales
 const kickFilter = createLowPassFilter();
 const kickTrack = new Tone.Player({
     url: "https://tonejs.github.io/audio/drum-samples/Techno/kick.mp3",
@@ -44,24 +43,21 @@ const bassTrack = new Tone.PolySynth({
     oscillator: { type: "square" },
 }).connect(bassFilter);
 
-// Control de frecuencia de filtros con deslizadores (con conversión logarítmica)
+
 function setupFilterControl(trackId, filter) {
   const filterControl = document.getElementById(`filter-${trackId}`);
   filterControl.addEventListener("input", (e) => {
       const value = parseFloat(e.target.value);
 
-      // Convierte el valor del deslizador a escala logarítmica
-      const minFreq = 40; // Frecuencia mínima
-      const maxFreq = 20000; // Frecuencia máxima
-      const logValue = minFreq * Math.pow(maxFreq / minFreq, value / maxFreq); // Fórmula logarítmica
+      const minFreq = 40; 
+      const maxFreq = 20000;
+      const logValue = minFreq * Math.pow(maxFreq / minFreq, value / maxFreq); 
 
-      // Aplica la frecuencia logarítmica al filtro
       filter.frequency.value = logValue;
   });
 }
 
 
-// Inicializar controles de filtros
 setupFilterControl("track1", kickFilter);
 
 setupFilterControl("track2", snareFilter);
@@ -86,14 +82,16 @@ let isReverbConnectedTrack4 = false;
 let isReverbConnectedTrack5 = false;
 let isReverbConnectedTrack6 = false;
 
-// Control de volumen
+// volume
 kickTrack.volume.value = parseFloat(document.querySelector(`#volume-track1`).value);
 snareTrack.volume.value = parseFloat(document.querySelector(`#volume-track2`).value); 
 melodyTrack.volume.value = parseFloat(document.querySelector(`#volume-track3`).value);
 clapTrack.volume.value = parseFloat(document.querySelector(`#volume-track4`).value);
 chordsTrack.volume.value = parseFloat(document.querySelector(`#volume-track5`).value);
 bassTrack.volume.value = parseFloat(document.querySelector(`#volume-track6`).value);
-// Loop de la melodía
+
+
+// Melodies, drums, chords
 
 
 function startSounds(){
@@ -148,18 +146,18 @@ Tone.Transport.scheduleRepeat((time) => {
 
 startSounds();
 
-// Controles de transporte (inicio y parada de la música)
+//Start and stop button
 document.getElementById("startTransport").addEventListener("click", async () => {
-  await Tone.start();  // Asegurarse de que Tone.js se ha inicializado
+  await Tone.start(); 
   Tone.Transport.position = 0;
   Tone.Transport.start();
 });
 
 document.getElementById("stopTransport").addEventListener("click", () => {
-  Tone.Transport.stop(); // Detener la reproducción
+  Tone.Transport.stop(); 
 });
 
-// Función general para manejar mute y reverb
+//Control of reverb and mute (could be optimized, because was done to 2 tracks and expanded manually one by one)
 function toggleControl(trackId, controlType) {
   const synth  = trackId === "track1" ? kickTrack :
                 trackId === "track2" ? snareTrack :
@@ -178,7 +176,7 @@ function toggleControl(trackId, controlType) {
                     trackId === "track5" ? isMutedTrack5:
                     isMutedTrack6;
     if (!isControlActive) {
-      synth.volume.value = -Infinity; // Silenciar la pista
+      synth.volume.value = -Infinity; 
       controlButton.classList.remove('active');
       controlButton.classList.add('inactive');
       controlButton.innerText ='OFF';
@@ -209,11 +207,11 @@ function toggleControl(trackId, controlType) {
                     trackId === "track5" ? isReverbConnectedTrack5:
                     isReverbConnectedTrack6;
     if (isControlActive) {
-      filter.disconnect(reverb); // Desconectar reverb
+      filter.disconnect(reverb); 
       controlButton.classList.remove('active');
       controlButton.classList.add('inactive');
     } else {
-      filter.connect(reverb); // Conectar reverb
+      filter.connect(reverb); 
       controlButton.classList.remove('inactive');
       controlButton.classList.add('active');
     }
@@ -226,76 +224,66 @@ function toggleControl(trackId, controlType) {
   }
 }
 
-// Controles para la pista 1
+//Controls for the diferent tracks (listeners on each button or slider)
+//track 1
 document.getElementById("volume-track1").addEventListener("input", (e) => {
   if(!isMutedTrack1){
-  kickTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
+  kickTrack.volume.value = parseFloat(e.target.value); 
   }
 });
-
-// Pista 1: Mute y Reverb
 document.getElementById("mute-track1").addEventListener("click", () => toggleControl("track1", "mute"));
 document.getElementById("reverb-track1").addEventListener("click", () => toggleControl("track1", "reverb"));
 
-// Controles para la pista 2
+//track 2
 document.getElementById("volume-track2").addEventListener("input", (e) => {
   if(!isMutedTrack2){
-  snareTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
+  snareTrack.volume.value = parseFloat(e.target.value); 
   }
 });
-
-// Pista 2: Mute y Reverb
 document.getElementById("mute-track2").addEventListener("click", () => toggleControl("track2", "mute"));
 document.getElementById("reverb-track2").addEventListener("click", () => toggleControl("track2", "reverb"));
 
-
+//track 3
 document.getElementById("volume-track3").addEventListener("input", (e) => {
   if(!isMutedTrack3){
-    melodyTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
+    melodyTrack.volume.value = parseFloat(e.target.value); 
   }
 });
-
-// Pista 2: Mute y Reverb
 document.getElementById("mute-track3").addEventListener("click", () => toggleControl("track3", "mute"));
 document.getElementById("reverb-track3").addEventListener("click", () => toggleControl("track3", "reverb"));
 
-
+//track 4
 document.getElementById("volume-track4").addEventListener("input", (e) => {
   if(!isMutedTrack4){
-    clapTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
+    clapTrack.volume.value = parseFloat(e.target.value); 
   }
 });
-
-// Pista 2: Mute y Reverb
 document.getElementById("mute-track4").addEventListener("click", () => toggleControl("track4", "mute"));
 document.getElementById("reverb-track4").addEventListener("click", () => toggleControl("track4", "reverb"));
 
-
+//track 5
 document.getElementById("volume-track5").addEventListener("input", (e) => {
   if(!isMutedTrack5){
-    chordsTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
+    chordsTrack.volume.value = parseFloat(e.target.value); 
   }
 });
-
-// Pista 2: Mute y Reverb
 document.getElementById("mute-track5").addEventListener("click", () => toggleControl("track5", "mute"));
 document.getElementById("reverb-track5").addEventListener("click", () => toggleControl("track5", "reverb"));
 
-// Controles para la pista 1
+//track 6
 document.getElementById("volume-track6").addEventListener("input", (e) => {
   if(!isMutedTrack6){
-  bassTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
+  bassTrack.volume.value = parseFloat(e.target.value); 
   }
 });
-
-// Pista 1: Mute y Reverb
 document.getElementById("mute-track6").addEventListener("click", () => toggleControl("track6", "mute"));
 document.getElementById("reverb-track6").addEventListener("click", () => toggleControl("track6", "reverb"));
 
 
 
 
-// Tabla de cronograma para automatizaciones
+// Organization of the song. This idea could be used to give the user the chance
+//of creating a melody, but would take much more time
 const part1=32;
 const part2=part1+32;
 const part3=part2+32;
@@ -325,7 +313,6 @@ const automationSchedule = [
   { time: part1+20, track: "track1", action: "mute", value: true },
   { time: part1+20, track: "track2", action: "mute", value: true }, 
   { time: part1+20, track: "track4", action: "reverb", value: true },
-
   //filtro las palmas, aislo la melodia, la filtro, y cierro todo
   { time: part2, track: "track4", action: "filter", value: { start: 16000, end: 14000, duration: 8 } },  
   { time: part2+8, track: "track4", action: "filter", value: { start: 14000, end: 8000, duration: 16 } },
@@ -392,11 +379,12 @@ const automationSchedule = [
 
 ];
 
-let isAutomating = false; // Estado global para detectar automatización en curso
+let isAutomating = false; 
 
+//This functions shares things with the one for controls, maybe they could be fused some way to optimice the code
 function automateMixer() {
   if (isAutomating) {
-    return; // Si ya está en curso, no hacer nada
+    return; 
   }
 
   let gifContainer = document.getElementById("automation-gif-container");
@@ -408,27 +396,27 @@ function automateMixer() {
     document.body.insertBefore(gifContainer, document.getElementById("tracks-container"));
   }
 
-  // Añadir el GIF al contenedor
+
   gifContainer.innerHTML = `<img src="tecno.gif" alt="Automatizando..." style="width: 200px; height: auto;">`;
   gifContainer.style.display = "block";
 
-  // Desactivar botones de inicio y automatización
+  // Block buttons
   document.getElementById("stopTransport").click();
   document.getElementById("startTransport").click();
   document.getElementById("startTransport").disabled = true;
   document.getElementById("stopTransport").disabled = true;
   const automateButton = document.getElementById("automate");
-  automateButton.disabled = true; // Desactivar el botón de automatización
+  automateButton.disabled = true; 
   automateButton.classList.add("disabled");
 
-  // Marcar que la automatización está en curso
+
   isAutomating = true;
 
 
 
   const now = Tone.now();
 
-  // Iterar sobre la tabla de cronograma
+  // Read all the instructions and program them
   automationSchedule.forEach((event) => {
     const track =
       event.track === "track1" ? kickTrack :
@@ -446,7 +434,7 @@ function automateMixer() {
 
     if (event.action === "reverb") {
       const reverbButton = document.getElementById(`reverb-${event.track}`);
-      // Automatizar reverb
+
       Tone.Transport.scheduleOnce(() => {
         if (event.value) {
           filter.connect(reverb);
@@ -476,21 +464,21 @@ function automateMixer() {
       }, now + event.time);
     } else if (event.action === "volume") {
       const volumeSlider = document.getElementById(`volume-${event.track}`);
-      // Automatizar volumen progresivo
+      
       Tone.Transport.scheduleOnce(() => {
         const volumeParam = track.volume;
         const { start, end, duration } = event.value;
 
-        // Actualizar visualmente el deslizador
-        volumeSlider.value = start; // Establecer al valor inicial
-        const interval = 100; // Milisegundos entre actualizaciones visuales
-        const steps = duration / (interval / 1000); // Número de pasos
+       
+        volumeSlider.value = start; 
+        const interval = 100;
+        const steps = duration / (interval / 1000); 
         const stepValue = (end - start) / steps;
         let step = 0;
         const visualUpdate = setInterval(() => {
           const currentValue = parseFloat(volumeSlider.value);
           const newValue = currentValue + stepValue;
-          volumeSlider.value = (newValue); // Evitar sobrepasar el valor mínim   
+          volumeSlider.value = (newValue);  
           volumeSlider.dispatchEvent(new Event('input'));
           step++;
           if (step >= steps) clearInterval(visualUpdate);
@@ -498,17 +486,17 @@ function automateMixer() {
         
 
         // Automate volume with Tone.js
-        volumeParam.setValueAtTime(start, now + event.time); // Inicio
-        volumeParam.linearRampToValueAtTime(end, now + event.time + duration); // Cambio progresivo
+        volumeParam.setValueAtTime(start, now + event.time); 
+        volumeParam.linearRampToValueAtTime(end, now + event.time + duration); 
       }, now + event.time);
     } else if (event.action === "filter") {
       const filterSlider = document.getElementById(`filter-${event.track}`);
-      // Automatizar filtro pasa baja
+      
       Tone.Transport.scheduleOnce(() => {
         const { start, end, duration } = event.value;
 
-        // Actualizar visualmente el deslizador
-        filterSlider.value = start; // Establecer al valor inicial
+        
+        filterSlider.value = start;
         const interval = 100;
         const steps = duration / (interval / 1000);
         const stepValue = (end - start) / steps;
@@ -517,23 +505,23 @@ function automateMixer() {
         const visualUpdate = setInterval(() => {
           const currentValue = parseFloat(filterSlider.value);
           const newValue = currentValue + stepValue;
-          filterSlider.value = newValue; // Evitar sobrepasar el valor mín
+          filterSlider.value = newValue;
           step++;
           if (step >= steps) clearInterval(visualUpdate);
         }, interval);
         
 
-        // Automatizar filtro con Tone.js
-        filter.frequency.setValueAtTime(40 * Math.pow(20000 / 40, start / 20000), now + event.time); // Inicio
+        
+        filter.frequency.setValueAtTime(40 * Math.pow(20000 / 40, start / 20000), now + event.time); 
         filter.frequency.linearRampToValueAtTime(40 * Math.pow(20000 / 40, end / 20000), now + event.time + duration); // Cambio progresivo
       }, now + event.time);
     } else if (event.action === "mute") {
       const muteButton = document.getElementById(`mute-${event.track}`);
-      // Automatizar mute (encender/apagar pista)
+      
       Tone.Transport.scheduleOnce(() => {
         const isMuted = event.value;
 
-        // Silenciar o restaurar la pista
+        
         if (isMuted) {
           muteButton.classList.remove("active");
           muteButton.classList.add("inactive");
@@ -564,11 +552,10 @@ function automateMixer() {
       }, now + event.time);
     }
   });
-  const automationEndTime = 330; // Asegurarse de incluir buffer
+  const automationEndTime = 330; 
   Tone.Transport.scheduleOnce(() => {
-    // Marcar automatización como terminada
     isAutomating = false;
-    // Reactivar botones
+    // reactivate buttons
     document.getElementById("startTransport").disabled = false;
     document.getElementById("stopTransport").disabled = false;
   }, now + automationEndTime);
@@ -577,5 +564,4 @@ function automateMixer() {
   Tone.Transport.start();
 }
 
-// Llamar a la función de automatización al pulsar el botón
 document.getElementById("automate").addEventListener("click", automateMixer);

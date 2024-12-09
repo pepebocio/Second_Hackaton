@@ -1,15 +1,14 @@
-/* Estilo básico para los botones */
-/* Contenedor de los tracks */
+
 #tracks-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px; /* Espacio entre las columnas */
-  justify-content: space-between; /* Espacio entre las columnas */
+  gap: 20px; 
+  justify-content: space-between; 
 }
 
-/* Cada track se ajusta a un 48% del ancho (2 columnas) */
+
 #tracks-container > div {
-  width: 48%; /* Dos columnas */
+  width: 48%; 
 }
 
 .control-button {
@@ -21,18 +20,17 @@
     cursor: pointer;
     font-size: 16px;
   }
-  
-  /* Color verde para cuando está activado */
+
   .control-button.active {
     background-color: green;
   }
   
-  /* Color rojo para cuando está desactivado */
+
   .control-button.inactive {
     background-color: red;
   }
   
-  /* Estilos para los botones de "Iniciar" y "Detener" transporte */
+
   button {
     margin: 5px;
     padding: 10px 20px;
@@ -43,14 +41,14 @@
   
   .track-name {
     font-family: 'Arial', sans-serif;
-    font-size: 18px; /* Tamaño más pequeño */
+    font-size: 18px;
     font-weight: bold;
     text-align: center;
-    color: #f5f5f5; /* Blanco suave */
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4); /* Sombra más ligera */
-    background: linear-gradient(45deg, #ff6a00, #ee0979); /* Degradado de color */
-    padding: 8px 16px; /* Menos padding */
-    border-radius: 6px; /* Bordes más suaves */
+    color: #f5f5f5;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4); 
+    background: linear-gradient(45deg, #ff6a00, #ee0979);
+    padding: 8px 16px; 
+    border-radius: 6px;
     margin: 8px 0;
     display: inline-block;
     transition: all 0.3s ease;
@@ -58,38 +56,38 @@
   
   .volume-container {
     display: flex;
-    align-items: center; /* Alinea verticalmente el texto y el slider */
-    gap: 10px; /* Espacio entre el texto y la barra */
+    align-items: center;
+    gap: 10px;
   }
   
   .volume-label {
     font-family: 'Arial', sans-serif;
-    font-size: 14px; /* Tamaño del texto */
-    color: #000; /* Blanco suave */
-    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Sombra ligera */
+    font-size: 14px;
+    color: #000; 
+    white-space: nowrap; 
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 
   }
   
   .volume-slider {
-    width: 150px; /* Ajusta el ancho de la barra */
-    height: 8px; /* Altura de la barra */
-    -webkit-appearance: none; /* Elimina estilos predeterminados del slider */
+    width: 150px; 
+    height: 8px;
+    -webkit-appearance: none; 
     appearance: none;
-    background: #ddd; /* Fondo de la barra */
+    background: #ddd;
     border-radius: 5px;
-    transition: background 0.3s ease; /* Transición suave */
+    transition: background 0.3s ease; 
   }
   
   .volume-slider:hover {
-    background: #aaa; /* Cambia el color al pasar el ratón */
+    background: #aaa;
   }
   
   .volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px; /* Tamaño del control deslizante */
+    width: 20px;
     height: 20px;
-    background: #007bff; /* Color del control deslizante */
+    background: #007bff; 
     border-radius: 50%;
     cursor: pointer;
   }
@@ -118,42 +116,42 @@
     width: 300px;
 
 }
-    /* Estilo especial para el botón de automatización */
+
     #automate {
-      background: linear-gradient(45deg, #28a745, #34d058); /* Degradado verde */
-      color: white; /* Texto blanco */
+      background: linear-gradient(45deg, #28a745, #34d058);
+      color: white; 
       font-weight: bold;
       border: none;
       border-radius: 10px;
       padding: 12px 25px;
       font-size: 18px;
       cursor: pointer;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
     }
     
     #automate:hover {
-      background: linear-gradient(45deg, #218838, #28a745); /* Tonos más oscuros al pasar el ratón */
-      transform: scale(1.1); /* Efecto de aumento */
-      box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+      background: linear-gradient(45deg, #218838, #28a745); 
+      transform: scale(1.1); 
+      box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2); 
     }
     
-    /* Estilo cuando el botón se desactiva (cuando está en uso) */
+    
     #automate:disabled {
-      background: linear-gradient(45deg, #dc3545, #e63946); /* Degradado rojo */
-      cursor: not-allowed; /* Cambio de cursor cuando el botón está desactivado */
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra más suave cuando está desactivado */
+      background: linear-gradient(45deg, #dc3545, #e63946);
+      cursor: not-allowed; 
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); 
     }
     
 
 #:active {
-  transform: scale(1); /* Restablecer tamaño al hacer clic */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra más ligera */
+  transform: scale(1); 
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
 
 #automation-gif-container {
-  width: 100%; /* Ocupar todo el ancho */
+  width: 100%;
   text-align: center;
-  margin-top: 20px; /* Espacio por encima */
+  margin-top: 20px;
 }
