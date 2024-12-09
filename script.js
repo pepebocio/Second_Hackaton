@@ -3,7 +3,7 @@ const reverb = new Tone.Reverb(6).toDestination(); // Reverb con un decay de 3 s
 reverb.wet.value = 0.8;
 
 // Crear sintetizadores y filtros para cada pista
-Tone.Transport.bpm.value = 127;
+
 
 function createLowPassFilter() {
     return new Tone.Filter({
@@ -63,19 +63,22 @@ function setupFilterControl(trackId, filter) {
 
 // Inicializar controles de filtros
 setupFilterControl("track1", kickFilter);
+
 setupFilterControl("track2", snareFilter);
 setupFilterControl("track3", melodyFilter);
 setupFilterControl("track4", clapFilter);
 setupFilterControl("track5", chordsFilter);  
 setupFilterControl("track6", bassFilter); 
+for (i=1;i<=6;i++){
+  document.getElementById(`filter-track${i}`).value=20000;
+}
 
-// Muted means on, i missed in the begging and now it's all messed up
-let isMutedTrack1 = true;
-let isMutedTrack2 = true;
-let isMutedTrack3 = true;
-let isMutedTrack4 = true;
-let isMutedTrack5= true;
-let isMutedTrack6= true;
+let isMutedTrack1 = false;
+let isMutedTrack2 = false;
+let isMutedTrack3 = false;
+let isMutedTrack4 = false;
+let isMutedTrack5= false;
+let isMutedTrack6= false;
 let isReverbConnectedTrack1 = false; 
 let isReverbConnectedTrack2 = false; 
 let isReverbConnectedTrack3 = false;
@@ -93,7 +96,10 @@ bassTrack.volume.value = parseFloat(document.querySelector(`#volume-track6`).val
 // Loop de la melodía
 
 
-Tone.Transport.scheduleRepeat((time) => {
+function startSounds(){
+  Tone.Transport.bpm.value = 120;
+
+  Tone.Transport.scheduleRepeat((time) => {
 	Tone.loaded().then(() => {
         kickTrack.start();
     }); 
@@ -104,7 +110,7 @@ Tone.Transport.scheduleRepeat((time) => {
 	snareTrack.start();
 }); 
 }, "2n","4n")
-const melody = ["C4", "D4", "F4","C4", "D4", "F4","C4", "D4", "F4","C4", "D4", "G4","C4", "D4", "F4"];
+const melody = ["C4", "D4", "F4","C4", "D4", "F4","C4", "D4", "F4","C4", "D4", "G4","C4", "D4", "F4","F3"];
 let index1=0
 
 Tone.Transport.scheduleRepeat((time) => {
@@ -138,12 +144,15 @@ Tone.Transport.scheduleRepeat((time) => {
     index2 = (index2 + 1) % bass.length ;
 }, "4n")
 
+}
 
+startSounds();
 
 // Controles de transporte (inicio y parada de la música)
 document.getElementById("startTransport").addEventListener("click", async () => {
   await Tone.start();  // Asegurarse de que Tone.js se ha inicializado
-  Tone.Transport.start(); // Iniciar la reproducción
+  Tone.Transport.position = 0;
+  Tone.Transport.start();
 });
 
 document.getElementById("stopTransport").addEventListener("click", () => {
@@ -168,7 +177,7 @@ function toggleControl(trackId, controlType) {
                     trackId === "track4" ? isMutedTrack4 :
                     trackId === "track5" ? isMutedTrack5:
                     isMutedTrack6;
-    if (isControlActive) {
+    if (!isControlActive) {
       synth.volume.value = -Infinity; // Silenciar la pista
       controlButton.classList.remove('active');
       controlButton.classList.add('inactive');
@@ -219,7 +228,7 @@ function toggleControl(trackId, controlType) {
 
 // Controles para la pista 1
 document.getElementById("volume-track1").addEventListener("input", (e) => {
-  if(isMutedTrack1){
+  if(!isMutedTrack1){
   kickTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
   }
 });
@@ -230,7 +239,7 @@ document.getElementById("reverb-track1").addEventListener("click", () => toggleC
 
 // Controles para la pista 2
 document.getElementById("volume-track2").addEventListener("input", (e) => {
-  if(isMutedTrack2){
+  if(!isMutedTrack2){
   snareTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
   }
 });
@@ -241,7 +250,7 @@ document.getElementById("reverb-track2").addEventListener("click", () => toggleC
 
 
 document.getElementById("volume-track3").addEventListener("input", (e) => {
-  if(isMutedTrack3){
+  if(!isMutedTrack3){
     melodyTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
   }
 });
@@ -252,7 +261,7 @@ document.getElementById("reverb-track3").addEventListener("click", () => toggleC
 
 
 document.getElementById("volume-track4").addEventListener("input", (e) => {
-  if(isMutedTrack4){
+  if(!isMutedTrack4){
     clapTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
   }
 });
@@ -263,7 +272,7 @@ document.getElementById("reverb-track4").addEventListener("click", () => toggleC
 
 
 document.getElementById("volume-track5").addEventListener("input", (e) => {
-  if(isMutedTrack5){
+  if(!isMutedTrack5){
     chordsTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
   }
 });
@@ -274,7 +283,7 @@ document.getElementById("reverb-track5").addEventListener("click", () => toggleC
 
 // Controles para la pista 1
 document.getElementById("volume-track6").addEventListener("input", (e) => {
-  if(isMutedTrack6){
+  if(!isMutedTrack6){
   bassTrack.volume.value = parseFloat(e.target.value); // Cambiar volumen con el deslizador
   }
 });
@@ -287,17 +296,135 @@ document.getElementById("reverb-track6").addEventListener("click", () => toggleC
 
 
 // Tabla de cronograma para automatizaciones
+const part1=32;
+const part2=part1+32;
+const part3=part2+32;
+const part4=part3+64;
+const part5=part4+80;
+const part6=part5+64;
 const automationSchedule = [
-  //{ time: 2, track: "track3", action: "reverb", value: true }, // Activar reverb en el segundo 2
-  //{ time: 4, track: "track3", action: "volume", value: { start: -24, end: -6, duration: 2 } }, // Cambiar volumen progresivamente entre el segundo 4 y 6
-  { time: 0, track: "track3", action: "filter", value: { start: 20000, end: 500, duration: 3 } }, // Cambiar filtro pasa baja
-  { time: 4, track: "track3", action: "filter", value: { start: 500, end: 20000, duration: 3 } },
-  { time: 8, track: "track3", action: "filter", value: { start: 20000, end: 500, duration: 3 } },
-  //{ time: 8, track: "track2", action: "mute", value: true } // Desactivar el mute (activar pista)
+  { time: 0, track: "track1", action: "mute", value: false },
+  { time: 0, track: "track1", action: "volume", value: { start: -48, end: -16, duration: 1} }, 
+  { time: 0, track: "track2", action: "mute", value: false } ,
+  { time: 0, track: "track2", action: "volume", value: { start: -48, end: -18, duration: 1 } }, 
+  { time: 0, track: "track3", action: "mute", value: true } ,
+  { time: 0, track: "track4", action: "mute", value: true } ,
+  { time: 0, track: "track5", action: "mute", value: true }, 
+  { time: 0, track: "track6", action: "mute", value: true } ,
+  { time: 12, track: "track2", action: "filter", value: { start: 20000, end:15000, duration: 10 } }, 
+  //Entra el piano de la melodia y más tarde las palmas
+  { time: part1, track: "track3", action: "mute", value: false } ,
+  { time: part1, track: "track3", action: "volume", value: { start: -48, end: -12, duration: 16 } }, 
+  { time: part1+8, track: "track1", action: "volume", value: { start: -16, end: -24, duration: 8} }, 
+  { time: part1+8, track: "track2", action: "volume", value: { start: -18, end: -26, duration: 8 } }, 
+  { time: part1+8, track: "track4", action: "filter", value: { start: 20000, end: 16000, duration: 12 } }, 
+  { time: part1+12, track: "track4", action: "mute", value: false } ,
+  { time: part1+12, track: "track4", action: "volume", value: { start: -40, end: -28, duration: 8 } }, 
+  { time: part1+16, track: "track3", action: "volume", value: { start: -12, end: -20, duration: 4 } }, 
+  { time: part1+18, track: "track3", action: "reverb", value: true }, 
+  { time: part1+20, track: "track1", action: "mute", value: true },
+  { time: part1+20, track: "track2", action: "mute", value: true }, 
+  { time: part1+20, track: "track4", action: "reverb", value: true },
+
+  //filtro las palmas, aislo la melodia, la filtro, y cierro todo
+  { time: part2, track: "track4", action: "filter", value: { start: 16000, end: 14000, duration: 8 } },  
+  { time: part2+8, track: "track4", action: "filter", value: { start: 14000, end: 8000, duration: 16 } },
+  { time: part2+8, track: "track4", action: "reverb", value: true },
+  { time: part2+12, track: "track1", action: "volume", value: { start: -48, end: -20, duration: 8} }, 
+  { time: part2+20, track: "track1", action: "mute", value: false },
+  //Entran los acordes con la caja
+  { time: part3, track: "track2", action: "mute", value: false } ,
+  { time: part3, track: "track2", action: "volume", value: { start: -40, end: -20, duration: 12} },
+  { time: part3+4, track: "track5", action: "volume", value: { start: -40, end: -18, duration: 16} },
+  { time: part3+4, track: "track5", action: "mute", value: false }, 
+  { time: part3+8, track: "track2", action: "filter", value: { start: 15000, end:16000, duration: 8 } }, 
+  { time: part3+32, track: "track3", action: "volume", value: { start: -20, end: -38, duration: 16 } }, 
+  { time: part3+32, track: "track1", action: "volume", value: { start: -20, end: -38, duration: 16 } },
+  { time: part3+48, track: "track1", action: "mute", value: true },
+  { time: part3+48, track: "track4", action: "mute", value: true },
+  { time: part3+48, track: "track3", action: "mute", value: true } ,
+  { time: part3+48, track: "track2", action: "filter", value: { start: 16000, end:13000, duration: 16 } },
+  { time: part3+64, track: "track2", action: "mute", value: true } ,
+  //Entra el bajo
+  { time: part4, track: "track5", action: "volume", value: { start: -18, end: -26, duration: 8} },
+  { time: part4+4, track: "track6", action: "volume", value: { start: -40, end: -8, duration: 16} },
+  { time: part4+6, track: "track5", action: "reverb", value: true },
+  { time: part4+8, track: "track6", action: "mute", value: false }, 
+  { time: part4+20, track: "track5", action: "filter", value: { start: 20000, end:15000, duration: 16 } },
+  { time: part4+27, track: "track4", action: "volume", value: { start: -48, end: -24, duration: 1 } },
+  { time: part4+28, track: "track4", action: "mute", value: false },
+  { time: part4+28, track: "track4", action: "filter", value: { start: 10000, end: 14000, duration: 16 } }, 
+  { time: part4+43, track: "track3", action: "volume", value: { start: -38, end: -16, duration: 1 } },
+  { time: part4+46, track: "track3", action: "mute", value: false } ,
+  { time: part4+49, track: "track3", action: "mute", value: true } ,
+  { time: part4+52, track: "track3", action: "mute", value: false } ,
+  { time: part4+55, track: "track3", action: "mute", value: true } ,
+  { time: part4+58, track: "track3", action: "mute", value: false } ,
+  { time: part4+61, track: "track3", action: "mute", value: true } ,
+  { time: part4+64, track: "track3", action: "mute", value: false } ,
+  { time: part4+67, track: "track3", action: "mute", value: true } ,
+  { time: part4+70, track: "track3", action: "mute", value: false } ,
+  { time: part4+72, track: "track3", action: "mute", value: true } ,
+  //entra todo
+  { time: part5, track: "track2", action: "filter", value: { start: 13000, end: 15000, duration: 8 } },
+  { time: part5, track: "track2", action: "mute", value: false } ,
+  { time: part5+4, track: "track4", action: "filter", value: { start: 14000, end: 12000, duration: 12 } }, 
+  { time: part5+8, track: "track1", action: "volume", value: { start: -38, end: -16, duration: 12 } },
+  { time: part5+8, track: "track1", action: "mute", value: false },
+  { time: part5+28, track: "track1", action: "mute", value: true },
+  { time: part5+28, track: "track2", action: "mute", value: true },
+  { time: part5+28, track: "track5", action: "mute", value: true },
+  { time: part5+28, track: "track4", action: "mute", value: true }, 
+  { time: part5+33, track: "track2", action: "mute", value: false },
+  { time: part5+33, track: "track5", action: "mute", value: false },
+  { time: part5+33, track: "track3", action: "mute", value: false }, 
+  { time: part5+33, track: "track4", action: "mute", value: false },
+  //final
+  { time: part6, track: "track3", action: "mute", value: true },
+  { time: part6, track: "track5", action: "mute", value: true },
+  { time: part6, track: "track4", action: "mute", value: true },
+  { time: part6, track: "track1", action: "mute", value: false },
+  { time: part6+16, track: "track6", action: "mute", value: true },
+  { time: part6+20, track: "track1", action: "mute", value: true },
+  { time: part6+20, track: "track2", action: "mute", value: true },
+
+
+
 ];
 
-// Función de automatización general
+let isAutomating = false; // Estado global para detectar automatización en curso
+
 function automateMixer() {
+  if (isAutomating) {
+    return; // Si ya está en curso, no hacer nada
+  }
+
+  let gifContainer = document.getElementById("automation-gif-container");
+  if (!gifContainer) {
+    gifContainer = document.createElement("div");
+    gifContainer.id = "automation-gif-container";
+    gifContainer.style.textAlign = "center";
+    gifContainer.style.marginTop = "20px";
+    document.body.insertBefore(gifContainer, document.getElementById("tracks-container"));
+  }
+
+  // Añadir el GIF al contenedor
+  gifContainer.innerHTML = `<img src="tecno.gif" alt="Automatizando..." style="width: 200px; height: auto;">`;
+  gifContainer.style.display = "block";
+
+  // Desactivar botones de inicio y automatización
+  document.getElementById("stopTransport").click();
+  document.getElementById("startTransport").click();
+  document.getElementById("startTransport").disabled = true;
+  document.getElementById("stopTransport").disabled = true;
+  const automateButton = document.getElementById("automate");
+  automateButton.disabled = true; // Desactivar el botón de automatización
+  automateButton.classList.add("disabled");
+
+  // Marcar que la automatización está en curso
+  isAutomating = true;
+
+
 
   const now = Tone.now();
 
@@ -325,11 +452,27 @@ function automateMixer() {
           filter.connect(reverb);
           reverbButton.classList.remove("inactive");
           reverbButton.classList.add("active");
+          
+          if (event.track === "track1") isReverbConnectedTrack1 = true;
+          else if(event.track === "track2") isReverbConnectedTrack2 = true;
+          else if(event.track === "track3") {isReverbConnectedTrack3 = true;} 
+          else if(event.track === "track4") {isReverbConnectedTrack4 = true;}  
+          else if(event.track === "track5") {isReverbConnectedTrack5 = true;} 
+          else if(event.track === "track6") {isReverbConnectedTrack6 = true;} 
         } else {
           filter.disconnect(reverb);
           reverbButton.classList.remove("active");
           reverbButton.classList.add("inactive");
+
+          if (event.track === "track1") isReverbConnectedTrack1 = false;
+          else if(event.track === "track2") isReverbConnectedTrack2 = false;
+          else if(event.track === "track3") {isReverbConnectedTrack3 = false;} 
+          else if(event.track === "track4") {isReverbConnectedTrack4 = false;}  
+          else if(event.track === "track5") {isReverbConnectedTrack5 = false;} 
+          else if(event.track === "track6") {isReverbConnectedTrack6 =false ;} 
         }
+
+
       }, now + event.time);
     } else if (event.action === "volume") {
       const volumeSlider = document.getElementById(`volume-${event.track}`);
@@ -343,20 +486,12 @@ function automateMixer() {
         const interval = 100; // Milisegundos entre actualizaciones visuales
         const steps = duration / (interval / 1000); // Número de pasos
         const stepValue = (end - start) / steps;
-
         let step = 0;
         const visualUpdate = setInterval(() => {
           const currentValue = parseFloat(volumeSlider.value);
           const newValue = currentValue + stepValue;
-        
-          // Si stepValue es positivo, no debe sobrepasar el valor máximo (end)
-          // Si stepValue es negativo, no debe sobrepasar el valor mínimo (min)
-
-
-
-            volumeSlider.value = newValue // Evitar sobrepasar el valor mínimo
-
-        
+          volumeSlider.value = (newValue); // Evitar sobrepasar el valor mínim   
+          volumeSlider.dispatchEvent(new Event('input'));
           step++;
           if (step >= steps) clearInterval(visualUpdate);
         }, interval);
@@ -382,9 +517,6 @@ function automateMixer() {
         const visualUpdate = setInterval(() => {
           const currentValue = parseFloat(filterSlider.value);
           const newValue = currentValue + stepValue;
-          
-          // Si stepValue es positivo, no debe sobrepasar el valor máximo (end)
-          // Si stepValue es negativo, no debe sobrepasar el valor mínimo (min)
           filterSlider.value = newValue; // Evitar sobrepasar el valor mín
           step++;
           if (step >= steps) clearInterval(visualUpdate);
@@ -392,8 +524,8 @@ function automateMixer() {
         
 
         // Automatizar filtro con Tone.js
-        filter.frequency.setValueAtTime(start, now + event.time); // Inicio
-        filter.frequency.linearRampToValueAtTime(end, now + event.time + duration); // Cambio progresivo
+        filter.frequency.setValueAtTime(40 * Math.pow(20000 / 40, start / 20000), now + event.time); // Inicio
+        filter.frequency.linearRampToValueAtTime(40 * Math.pow(20000 / 40, end / 20000), now + event.time + duration); // Cambio progresivo
       }, now + event.time);
     } else if (event.action === "mute") {
       const muteButton = document.getElementById(`mute-${event.track}`);
@@ -401,26 +533,45 @@ function automateMixer() {
       Tone.Transport.scheduleOnce(() => {
         const isMuted = event.value;
 
-        // Actualizar visualmente el botón de mute
+        // Silenciar o restaurar la pista
         if (isMuted) {
           muteButton.classList.remove("active");
           muteButton.classList.add("inactive");
           muteButton.innerText = "OFF";
+          track.volume.setValueAtTime(-Infinity, now + event.time);
+
+          if (event.track === "track1") isMutedTrack1 = true;
+          else if (event.track === "track2")isMutedTrack2 = true;
+              else if (event.track === "track3")isMutedTrack3 = true;
+                  else if (event.track === "track4")isMutedTrack4 = true;
+                      else if (event.track === "track5")isMutedTrack5 = true;
+                        else if (event.track === "track6")isMutedTrack6 = true;
         } else {
           muteButton.classList.remove("inactive");
           muteButton.classList.add("active");
           muteButton.innerText = "ON";
+          track.volume.setValueAtTime(parseFloat(document.querySelector(`#volume-${event.track}`).value), now + event.time);
+          
+          if (event.track === "track1") isMutedTrack1 = false;
+          else if (event.track === "track2")isMutedTrack2 = false;
+              else if (event.track === "track3")isMutedTrack3 = false;
+                  else if (event.track === "track4")isMutedTrack4 = false;
+                      else if (event.track === "track5")isMutedTrack5 = false;
+                        else if (event.track === "track6")isMutedTrack6 = false;
         }
 
-        // Silenciar o restaurar la pista
-        if (isMuted) {
-          track.volume.setValueAtTime(-Infinity, now + event.time);
-        } else {
-          track.volume.setValueAtTime(parseFloat(document.querySelector(`#volume-${event.track}`).value), now + event.time);
-        }
+
       }, now + event.time);
     }
   });
+  const automationEndTime = 330; // Asegurarse de incluir buffer
+  Tone.Transport.scheduleOnce(() => {
+    // Marcar automatización como terminada
+    isAutomating = false;
+    // Reactivar botones
+    document.getElementById("startTransport").disabled = false;
+    document.getElementById("stopTransport").disabled = false;
+  }, now + automationEndTime);
 
   // Arrancar el transporte
   Tone.Transport.start();
